@@ -10,6 +10,9 @@ export function initializeApp(app: INestApplication): void {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
 

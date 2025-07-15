@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { initializeApp } from './app';
+import { initializeApp } from './app.create';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
