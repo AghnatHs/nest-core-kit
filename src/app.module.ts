@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoggerModule } from 'nestjs-pino';
 import typeorm from './config/database/typeorm.config';
 import environmentValidation from './config/environment.validation';
 
@@ -14,6 +15,24 @@ console.log(`Environment: ${env}`);
       envFilePath: `.env.${env}`,
       load: [typeorm],
       validationSchema: environmentValidation,
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          targets: [
+            {
+              target: 'pino-pretty',
+              options: { colorize: true },
+              level: 'info',
+            },
+            {
+              target: 'pino/file',
+              options: { destination: './logs/app.log' },
+              level: 'info',
+            },
+          ],
+        },
+      },
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
