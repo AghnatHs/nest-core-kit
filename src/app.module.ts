@@ -1,12 +1,24 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import typeorm from './config/database/typeorm.config';
+import environmentValidation from './config/environment.validation';
 
 const env: string = process.env.NODE_ENV || 'development';
+console.log(`Environment: ${env}`);
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${env}`,
+      load: [typeorm],
+      validationSchema: environmentValidation,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        configService.get('typeorm')!,
     }),
   ],
   controllers: [],
