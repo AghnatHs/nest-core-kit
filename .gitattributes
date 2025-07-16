@@ -1,0 +1,5 @@
+# Force LF line endings for these file types
+*.ts text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.env text eol=lf
