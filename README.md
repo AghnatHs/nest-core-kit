@@ -50,6 +50,9 @@ $ npm run start:prod
 # unit tests
 $ npm run test
 
+# unit tests (verbose)
+$ npm run test:verbose
+
 # e2e tests
 $ npm run test:e2e
 
