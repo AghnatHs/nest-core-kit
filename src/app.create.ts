@@ -1,4 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Express } from 'express';
 import { Logger } from 'nestjs-pino';
 
 /**
@@ -6,6 +7,12 @@ import { Logger } from 'nestjs-pino';
  * @param app - The NestJS application instance to configure.
  */
 export function initializeApp(app: INestApplication): void {
+  const expressInstance: Express = app
+    .getHttpAdapter()
+    .getInstance() as Express;
+
+  expressInstance.disable('x-powered-by');
+
   app.useLogger(app.get(Logger));
 
   app.useGlobalPipes(
