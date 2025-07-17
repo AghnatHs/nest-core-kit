@@ -1,6 +1,8 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Express } from 'express';
 import { Logger } from 'nestjs-pino';
+import { AllExceptionsFilter } from './core/http/filters/http-exception.filter';
+import { SuccessResponseInterceptor } from './core/http/interceptors/success-response.interceptor';
 
 /**
  * Configures the NestJS application with global settings and middleware.
@@ -25,6 +27,10 @@ export function initializeApp(app: INestApplication): void {
       },
     }),
   );
+
+  app.useGlobalFilters(new AllExceptionsFilter(app.get<Logger>(Logger)));
+
+  app.useGlobalInterceptors(new SuccessResponseInterceptor());
 
   app.enableCors();
 }
