@@ -26,10 +26,13 @@ Use at your own discretion.
 
 ## What already configured
 
-- TypeORM
-- Logger (Pino)
+- TypeORM (migrations included by command "npm run migration:*")
+- Logger (Pino) (log to console and files)
 - ExceptionFilter (when response is error or HTTPException)
 - Interceptor (when response is success)
+
+- Centralized response using HTTPResponse class for consistency
+- .env.* (per development) 
 
 Fully Customizable
 
@@ -47,6 +50,10 @@ $ git init
 $ npm install
 
 $ setup .env.production, .env.development, and .env.test from .env.example
+
+$ mkdir logs
+
+$ npm run start:dev
 ```
 
 ## Compile and run the project
