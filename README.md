@@ -49,7 +49,10 @@ $ git init
 
 $ npm install
 
-$ setup .env.production, .env.development, and .env.test from .env.example
+# setup .env.production, .env.development, and .env.test from .env.example
+$ cp .env.example .env.production
+$ cp .env.example .env.development
+$ cp .env.example .env.test
 
 $ mkdir logs
 
