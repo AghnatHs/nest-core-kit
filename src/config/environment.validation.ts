@@ -9,6 +9,7 @@ export default Joi.object({
     .valid('development', 'production', 'test')
     .default('development'),
 
+  APP_NAME: Joi.string().required(),
   APP_PORT: Joi.number().default(5000),
 
   DB_TYPE: Joi.string().required(),
