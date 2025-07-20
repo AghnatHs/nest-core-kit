@@ -32,6 +32,10 @@ console.log(`Environment: ${env}`);
             },
           ],
         },
+        customProps: (_, __) => ({
+          context: `[${process.env.APP_NAME}]`,
+          env: env,
+        }),
       },
     }),
     TypeOrmModule.forRootAsync({
