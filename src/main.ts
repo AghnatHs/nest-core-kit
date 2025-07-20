@@ -18,11 +18,6 @@ async function bootstrap(): Promise<void> {
   logger.log(
     `Starting application in ${process.env.NODE_ENV} mode at ${process.env.APP_URL}`,
   );
-  logger.debug('debug');
-  logger.log('log');
-  logger.warn('warn');
-  logger.error('error');
-  logger.fatal('fatal');
 
   await app.listen(process.env.APP_PORT ?? 3000);
 }
