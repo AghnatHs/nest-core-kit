@@ -19,8 +19,11 @@ export function createPinoLoggerOptions(config: ConfigService): Params {
         if (res.statusCode >= 300) return 'silent';
         return 'info';
       },
-      customSuccessMessage(req: IncomingMessage, _) {
-        return `${req.method} ${req.url} completed`;
+      customSuccessMessage(
+        req: IncomingMessage,
+        res: ServerResponse<IncomingMessage>,
+      ) {
+        return `${req.method} ${req.url} completed with status code ${res.statusCode}`;
       },
       customProps: () => ({
         context: `[${appName}]`,
