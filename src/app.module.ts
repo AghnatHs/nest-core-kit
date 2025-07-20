@@ -9,6 +9,8 @@ import environmentValidation from './config/environment.validation';
 
 const env: string = process.env.NODE_ENV || 'development';
 
+const logLevel: string = env === 'production' ? 'info' : 'debug';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -55,17 +57,14 @@ const env: string = process.env.NODE_ENV || 'development';
                   translateTime: 'SYS:standard',
                   ignore: 'pid,hostname',
                 },
-                level: 'debug',
+                level: logLevel,
               },
               {
                 target: 'pino/file',
                 options: {
                   destination: './logs/app.log',
                 },
-                level:
-                  config.get<string>('app.environment') === 'production'
-                    ? 'info'
-                    : 'debug',
+                level: logLevel,
               },
             ],
           },
