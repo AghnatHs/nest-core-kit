@@ -27,7 +27,7 @@ Use at your own discretion.
 ## What already configured
 
 - TypeORM (migrations included by command "npm run migration:*")
-- Logger (Pino) (log to console and files)
+- Logger (Pino) (log to console and files (daily rotation))
 - ExceptionFilter (when response is error or HTTPException)
 - Interceptor (when response is success)
 
