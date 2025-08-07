@@ -12,6 +12,10 @@ export function createPinoLoggerOptions(config: ConfigService): Params {
 
   return {
     pinoHttp: {
+      redact: {
+        paths: ['req.headers.authorization', 'req.headers.cookie'],
+        censor: '[REDACTED]',
+      },
       level: 'trace',
       customLogLevel(_, res: ServerResponse<IncomingMessage>, err?: Error) {
         if (res.statusCode >= 500 || err) return 'error';
