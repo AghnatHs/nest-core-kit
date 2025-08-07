@@ -30,7 +30,7 @@ export function createPinoLoggerOptions(config: ConfigService): Params {
         return `${req.method} ${req.url} completed with status code ${res.statusCode}`;
       },
       customProps: () => ({
-        context: `[${appName}]`,
+        context: `[${appName}] - ${env} mode `,
         env: env,
       }),
       transport: {
