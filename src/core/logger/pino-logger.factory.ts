@@ -29,7 +29,16 @@ export function createPinoLoggerOptions(config: ConfigService): Params {
       ) {
         return `${req.method} ${req.url} completed with status code ${res.statusCode}`;
       },
-      customProps: () => ({
+      customErrorMessage(
+        req: IncomingMessage,
+        res: ServerResponse<IncomingMessage>,
+      ) {
+        return `ERROR ${req.method} ${req.url} errored with status code ${res.statusCode}`;
+      },
+      customProps: (
+        _: IncomingMessage,
+        __: ServerResponse<IncomingMessage>,
+      ) => ({
         context: `[${appName}] - ${env} mode `,
         env: env,
       }),
