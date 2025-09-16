@@ -50,13 +50,46 @@ $ git init
 $ npm install
 
 # setup .env.production, .env.development, and .env.test from .env.example
-$ cp .env.example .env.production
-$ cp .env.example .env.development
-$ cp .env.example .env.test
+$ cp .env.example .env.production 
+$ cp .env.example .env.development # optional in production environment
+$ cp .env.example .env.test # optional in production environment
 
 $ mkdir logs
 
 $ npm run start:dev
+```
+
+## Migration (Development)
+Migration in development will use .env.development
+```bash
+# Apply all migration to database 
+$ npm run migration:run
+
+# generate migration based on current entities (Linux / MacOs)
+$ npm run migration:generate --name=CreateUsersTable
+# generate migration based on current entities (Windows)
+$ npm run migration:generate:win --name=CreateUsersTable
+
+# generate migration based on current entities (Linux / MacOs)
+$ npm run migration:create --name=CustomMigration
+# generate migration based on current entities (Windows)
+$ npm run migration:create:win --name=CustomMigration
+
+# undo most recent migration
+$ npm run migration:revert
+```
+- Never edit existing migration, create a new one instead
+- On Windows, use the *:win variants because environment variable syntax differs (%VAR% - $VAR).
+
+## Migration (Production)
+Migration in production NEED to use .env.production, and so based on src/config/database/typeorm.config.ts you need to supply the correct NODE_ENV
+```bash
+NODE_ENV=production npm run migration:run
+```
+OR
+```bash
+cross-env NODE_ENV=production npm run migration:run
+
 ```
 
 ## Compile and run the project
