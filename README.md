@@ -59,6 +59,27 @@ $ mkdir logs
 $ npm run start:dev
 ```
 
+## Migration
+```bash
+# Apply all migration to database 
+$ npm run migration:run
+
+# generate migration based on current entities (Linux / MacOs)
+$ npm run migration:generate --name=CreateUsersTable
+# generate migration based on current entities (Windows)
+$ npm run migration:generate:win --name=CreateUsersTable
+
+# generate migration based on current entities (Linux / MacOs)
+$ npm run migration:create --name=CustomMigration
+# generate migration based on current entities (Windows)
+$ npm run migration:create:win --name=CustomMigration
+
+# undo most recent migration
+$ npm run migration:revert
+```
+- Never edit existing migration, create a new one instead
+- On Windows, use the :win variants because environment variable syntax differs (%VAR% - $VAR).
+
 ## Compile and run the project
 
 ```bash
