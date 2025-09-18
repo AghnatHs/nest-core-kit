@@ -1,4 +1,3 @@
-// test/test-utils.ts
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { initializeApp } from 'src/app.create';
