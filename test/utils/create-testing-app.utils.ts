@@ -5,6 +5,12 @@ import { initializeApp } from 'src/app.create';
 import { AppModule } from 'src/app.module';
 import { App } from 'supertest/types';
 
+/**
+ * Creates and initializes a Nest application for testing purposes.
+ *
+ * @async
+ * @returns {Promise<INestApplication<App>>} A Promise that resolves to the initialized Nest application.
+ */
 export default async function createTestingApp(): Promise<
   INestApplication<App>
 > {
