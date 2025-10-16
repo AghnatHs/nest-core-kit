@@ -70,9 +70,9 @@ $ npm run migration:generate --name=CreateUsersTable
 # generate migration based on current entities (Windows)
 $ npm run migration:generate:win --name=CreateUsersTable
 
-# generate migration based on current entities (Linux / MacOs)
+# create empty migration file (Linux / MacOs)
 $ npm run migration:create --name=CustomMigration
-# generate migration based on current entities (Windows)
+# create empty migration file (Windows)
 $ npm run migration:create:win --name=CustomMigration
 
 # undo most recent migration
@@ -82,14 +82,9 @@ $ npm run migration:revert
 - On Windows, use the *:win variants because environment variable syntax differs (%VAR% - $VAR).
 
 ## Migration (Production)
-Migration in production NEED to use .env.production, and so based on src/config/database/typeorm.config.ts you need to supply the correct NODE_ENV
+For running a newly migration in production, just run this command
 ```bash
-NODE_ENV=production npm run migration:run
-```
-OR
-```bash
-cross-env NODE_ENV=production npm run migration:run
-
+$ npm run migration:run:production
 ```
 
 ## Compile and run the project

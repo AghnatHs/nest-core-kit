@@ -21,6 +21,7 @@
     "test:e2e": "cross-env NODE_ENV=test jest --verbose --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:run": "npm run typeorm migration:run -- -d ./src/config/database/typeorm.config.ts",
+    "migration:run:production": "cross-env NODE_ENV=production npm run migration:run",
     "migration:generate": "npm run typeorm -- -d ./src/config/database/typeorm.config.ts migration:generate ./src/migrations/$npm_config_name",
     "migration:generate:win": "npm run typeorm -- -d ./src/config/database/typeorm.config.ts migration:generate ./src/migrations/%npm_config_name%",
     "migration:create": "npm run typeorm -- migration:create ./src/migrations/$npm_config_name",
