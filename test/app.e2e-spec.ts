@@ -3,18 +3,28 @@ import * as request from 'supertest';
 import TestAgent from 'supertest/lib/agent';
 import { App } from 'supertest/types';
 import createTestingApp from './utils/create-testing-app.utils';
+import { clearDatabase, dropDatabase } from './utils/testing-database.utils';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
   let requestTestAgent: TestAgent;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     app = await createTestingApp();
-    requestTestAgent = request.agent(app.getHttpServer());
+    requestTestAgent = request(app.getHttpServer());
+  });
+
+  beforeEach(async () => {
+    // none
+  });
+
+  afterAll(async () => {
+    await dropDatabase();
+    await app.close();
   });
 
   afterEach(async () => {
-    await app.close();
+    await clearDatabase(app);
   });
 
   it('/ (GET)', () => {
