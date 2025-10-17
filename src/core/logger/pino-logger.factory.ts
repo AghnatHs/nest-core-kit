@@ -5,7 +5,10 @@ import * as path from 'path';
 
 export function createPinoLoggerOptions(config: ConfigService): Params {
   const env = config.get<string>('app.environment');
-  const logLevel: string = env === 'production' ? 'info' : 'debug';
+  let logLevel: string = env === 'production' ? 'info' : 'debug';
+  if (env === 'test') {
+    logLevel = 'silent';
+  }
   const appName = config.get<string>('app.name');
 
   const logsDir = path.join(process.cwd(), 'logs');
