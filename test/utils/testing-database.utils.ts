@@ -12,7 +12,16 @@ async function dropDatabase(): Promise<void> {
 
 async function clearDatabase(app: INestApplication): Promise<void> {
   const dataSource: DataSource = app.get<DataSource>(DataSource);
-  await dataSource.synchronize(true);
+  const entities = dataSource.entityMetadatas;
+
+  await dataSource.query('SET FOREIGN_KEY_CHECKS = 0;');
+
+  for (const entity of entities) {
+    const repository = dataSource.getRepository(entity.name);
+    await repository.query(`TRUNCATE TABLE \`${entity.tableName}\`;`);
+  }
+
+  await dataSource.query('SET FOREIGN_KEY_CHECKS = 1;');
 }
 
 export { clearDatabase, dropDatabase };
