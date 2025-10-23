@@ -1,5 +1,3 @@
-import { instanceToPlain } from 'class-transformer';
-
 /**
  * Abstract base class representing a HTTP response structure.
  *
@@ -45,6 +43,6 @@ export class DataResponse<T> extends MessageResponse {
 
   constructor(statusCode: number, message: string, data: T) {
     super(statusCode, message);
-    this.data = instanceToPlain(data) as T;
+    this.data = data;
   }
 }
