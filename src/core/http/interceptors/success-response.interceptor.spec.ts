@@ -10,6 +10,7 @@ class TestEntity {
   @Expose()
   id: number;
 
+  @Exclude()
   name: string;
 
   constructor(id: number, name: string) {
