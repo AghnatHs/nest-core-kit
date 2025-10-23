@@ -1,8 +1,23 @@
 import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
+import { Exclude, Expose } from 'class-transformer';
 import { of } from 'rxjs';
 import { DataResponse, MessageResponse } from '../http-response';
 import { SuccessResponseInterceptor } from './success-response.interceptor';
+
+@Exclude()
+class TestEntity {
+  @Expose()
+  id: number;
+
+  @Exclude()
+  name: string;
+
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
 
 describe('SuccessResponseInterceptor', () => {
   let interceptor: SuccessResponseInterceptor;
@@ -119,5 +134,25 @@ describe('SuccessResponseInterceptor', () => {
       expect(result.message).toBe('Created');
       done();
     });
+  });
+
+  it('must serialize DataResponse data using class-transformer', (done) => {
+    const entity = new TestEntity(1, 'test');
+    const data: DataResponse<TestEntity> = new DataResponse(
+      200,
+      'Entity fetched successfully',
+      entity,
+    );
+
+    (callHandler.handle as jest.Mock).mockReturnValue(of(data));
+
+    interceptor
+      .intercept(context, callHandler)
+      .subscribe((result: DataResponse<TestEntity>) => {
+        expect(result).toBe(data);
+        expect(result.data).toEqual({ id: 1 }); // only exposed property
+        expect(result.message).toBe('Entity fetched successfully');
+        done();
+      });
   });
 });
