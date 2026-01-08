@@ -8,10 +8,6 @@
   <p align="center">Nest TypeScript starter kit by AghnatHs</p>
     <p align="center">
 
-### TODO
-
-- Dockerize
-
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript core kit (mainly for personal use), with pre-configure TypeORM, Logger (Pino), ExceptionFilter, and Interceptor.
@@ -39,18 +35,17 @@ Fully Customizable
 ## Project setup
 
 ```bash
-$ git clone --depth=1 https://github.com/AghnatHs/nest-core-kit.git nest-core-kit
+use the template to create your own repository, with (Use this template) butotn
+ 
+$ git clone https://github.com/your-username/your-repository.git .
 
-$ cd nest-core-kit
-
-$ rm -rf .git
-
-$ git init
+$ cd your-repository
 
 $ npm install
 
 # setup .env.production, .env.development, and .env.test from .env.example
 $ cp .env.example .env.production 
+$ cp .env.example .env.staging # optional in production environment
 $ cp .env.example .env.development # optional in production environment
 $ cp .env.example .env.test # optional in production environment
 
@@ -84,20 +79,50 @@ $ npm run migration:revert
 ## Migration (Production)
 For running a newly migration in production, just run this command
 ```bash
-$ npm run migration:run:production
+$ npm run migration:run:production OR $ npm run migration:run:production-js
+```
+
+## Migration (Staging)
+For running a newly migration in staging, just run this command
+```bash
+$ npm run migration:run:staging OR $ npm run migration:run:staging-js
+```
+
+## Migration (Using compiled js)
+If you want to run migration using compiled javascript files on dist folder, you can use this command
+```bash
+$ npm run build
+
+# For production, will use .env.production 
+$ NODE_ENV=production npm run migration:run:js
+
+# For staging, will use .env.staging
+$ NODE_ENV=staging npm run migration:run:js
 ```
 
 ## Compile and run the project
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# development mode, will use .env.development
+$ cp .env.example .env.development
+$ npm run migration:run
 $ npm run start:dev
 
-# production mode
+# production mode, will use .env.production
+$ cp .env.example .env.production
+$ npm run build
+$ npm run migration:run:production
 $ npm run start:prod
+
+# using docker (production)
+$ cp .env.example .env
+$ docker build --build-arg NODE_ENV=production -t nest-core-kit .
+$ docker run -d -p 3000:3000 --env-file .env --name nest-core-kit-container nest-core-kit
+
+# using docker (staging)
+$ cp .env.example .env.staging
+$ docker build --build-arg NODE_ENV=staging -t nest-core-kit:staging .
+$ docker run -d -p 3000:3000 --env-file .env.staging --name nest-core-kit-staging nest-core-kit:staging
 ```
 
 ## Run tests

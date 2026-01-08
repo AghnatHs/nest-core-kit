@@ -1,11 +1,14 @@
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
-dotenvConfig({
-  path: process.env.NODE_ENV
-    ? `.env.${process.env.NODE_ENV}`
-    : '.env.development',
-});
+// Only load from .env file if not running in a container (where env vars are injected directly)
+if (!process.env.DB_HOST) {
+  dotenvConfig({
+    path: process.env.NODE_ENV
+      ? `.env.${process.env.NODE_ENV}`
+      : '.env.development',
+  });
+}
 
 const isTestEnvironment: boolean = process.env.NODE_ENV === 'test';
 
