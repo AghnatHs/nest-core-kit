@@ -54,6 +54,8 @@ $ mkdir logs
 $ npm run start:dev
 ```
 
+## Migration
+
 ## Migration (Development)
 Migration in development will use .env.development
 ```bash
@@ -77,15 +79,15 @@ $ npm run migration:revert
 - On Windows, use the *:win variants because environment variable syntax differs (%VAR% - $VAR).
 
 ## Migration (Production)
-For running a newly migration in production, just run this command
+For running a newly migration in production using .env.production, just run this command
 ```bash
-$ npm run migration:run:production OR $ npm run migration:run:production-js
+$ npm run migration:run:production
 ```
 
 ## Migration (Staging)
-For running a newly migration in staging, just run this command
+For running a newly migration in staging using .env.staging, just run this command
 ```bash
-$ npm run migration:run:staging OR $ npm run migration:run:staging-js
+$ npm run migration:run:staging
 ```
 
 ## Migration (Using compiled js)
