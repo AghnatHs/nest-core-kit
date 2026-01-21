@@ -1,4 +1,9 @@
 {
+  "exclude": ["node_modules", "dist", "coverage"],
+  "paths": {
+    "src/*": ["src/*"]
+  },
+  "typeRoots": ["./src/types", "./node_modules/@types"],
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -11,7 +16,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "src/*": ["src/*"],
+      "src/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
