@@ -1,0 +1,37 @@
+message="$(cat "$1")"
+
+# Allowed commit types
+types="feat|fix|hotfix|docs|style|refactor|test|chore|perf|revert"
+
+# Required pattern: type(module): description
+requiredPattern="^($types)\([a-zA-Z0-9_-]+\): .+"
+
+if ! echo "$message" | grep -Eq "$requiredPattern"; then
+  echo "--------------------------------------------------"
+  echo "🚨 Invalid commit message format"
+  echo
+  echo "Expected format:"
+  echo "  <type>(<module>): <description>"
+  echo
+  echo "Allowed types:"
+  echo "  feat      Introduce a new feature"
+  echo "  fix       Fix a bug"
+  echo "  hotfix    Urgently fix a fatal bug"
+  echo "  docs      Documentation changes"
+  echo "  style     Styling changes (no logic change)"
+  echo "  refactor  Code refactoring"
+  echo "  test      Add or update tests"
+  echo "  chore     Maintenance tasks"
+  echo "  perf      Performance optimization, algorithm optimization"
+  echo "  revert    Revert PR, revert commit"
+  echo
+  echo "Examples:"
+  echo "  feat(User): add authentication mechanism"
+  echo "  fix(Order): handle null checkout price"
+  echo "  refactor(Auth): simplify token validation"
+  echo
+  echo "Your commit message:"
+  echo "  $message"
+  echo "--------------------------------------------------"
+  exit 1
+fi
