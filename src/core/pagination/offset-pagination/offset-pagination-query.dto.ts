@@ -19,4 +19,7 @@ export class OffsetPaginationQueryDto {
     default: 1,
   })
   page?: number = 1;
+
+  @IsOptional()
+  private readonly __brand: 'OffsetPaginationQueryDto';
 }

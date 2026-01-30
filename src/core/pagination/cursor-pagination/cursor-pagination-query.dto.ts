@@ -48,4 +48,7 @@ export class CursorPaginationQueryDto {
     nullable: true,
   })
   afterCursor?: string;
+
+  @IsOptional()
+  private readonly __brand: 'CursorPaginationQueryDto';
 }
