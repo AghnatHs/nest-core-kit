@@ -50,7 +50,7 @@ export class OffsetPaginationProvider {
       items: items,
       meta: {
         itemsPerPage: paginationQuery.limit,
-        totalPage: totalItems,
+        totalItems: totalItems,
         currentPage: paginationQuery.page,
         totalPages: totalPages,
       },
