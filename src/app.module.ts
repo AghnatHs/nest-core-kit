@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
-import app from './config/app/app.config';
-import { dataSourceOptions } from './config/database/typeorm.config';
-import environmentValidation from './config/environment.validation';
-import { createPinoLoggerOptions } from './core/logger/pino-logger.factory';
+import app from './infrastructure/config/app/app.config';
+import { dataSourceOptions } from './infrastructure/config/database/typeorm.config';
+import environmentValidation from './infrastructure/config/environment.validation';
+import { createPinoLoggerOptions } from './infrastructure/core/logger/pino-logger.factory';
 
 const env: string = process.env.NODE_ENV || 'development';
 
