@@ -1,9 +1,13 @@
 import { INestApplication } from '@nestjs/common';
 import { config as dotenvConfig } from 'dotenv';
-import { dataSourceOptions } from 'src/config/database/typeorm.config';
+import { dataSourceOptions } from 'src/infrastructure/config/database/typeorm.config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
-dotenvConfig({ path: `.env.${process.env.NODE_ENV || 'test'}` });
+dotenvConfig({
+  path: `.env.${process.env.NODE_ENV || 'test'}`,
+  debug: false,
+  quiet: true,
+});
 
 /**
  * Creates admin connection options for database management operations.

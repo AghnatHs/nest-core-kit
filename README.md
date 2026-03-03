@@ -22,21 +22,30 @@ Use at your own discretion.
 
 ## What already configured
 
-- TypeORM (migrations included by command "npm run migration:*")
+- TypeORM (migrations included by command "npm run migration:\*")
 - Logger (Pino) (log to console and files (daily rotation))
 - ExceptionFilter (when response is error or HTTPException)
 - Interceptor (when response is success)
 
 - Centralized response using HTTPResponse class for consistency
-- .env.* (per development) 
+- .env.\* (per development)
 
-Fully Customizable
+## How I structure the project
+
+I use a DDD + VSA-inspired structure, but not strictly follow DDD principles. The goal is to pragmatically separate concerns and keep the codebase easy to maintain and understand.
+
+- Domain → Domain models + domain services
+- Features (UseCases) → API layer (Controllers) + application services (UseCases) + DTOs + validators
+- Infrastructure → ORM (TypeORM) + Express (NestJS) + Logger (Pino) + ExceptionFilter + Interceptor
+- Libs → reusable by Domain or Features (pure, no framework dependencies)
+- Migrations → depend on Infrastructure (ORM)
+- Types → mostly for extending Express.Request and Express.Response, but can be used for other shared types
 
 ## Project setup
 
 ```bash
 use the template to create your own repository, with (Use this template) butotn
- 
+
 $ git clone https://github.com/your-username/your-repository.git .
 
 $ cd your-repository
@@ -44,7 +53,7 @@ $ cd your-repository
 $ npm install
 
 # setup .env.production, .env.development, and .env.test from .env.example
-$ cp .env.example .env.production 
+$ cp .env.example .env.production
 $ cp .env.example .env.staging # optional in production environment
 $ cp .env.example .env.development # optional in production environment
 $ cp .env.example .env.test # optional in production environment
@@ -57,9 +66,11 @@ $ npm run start:dev
 ## Migration
 
 ## Migration (Development)
+
 Migration in development will use .env.development
+
 ```bash
-# Apply all migration to database 
+# Apply all migration to database
 $ npm run migration:run
 
 # generate migration based on current entities (Linux / MacOs)
@@ -75,27 +86,34 @@ $ npm run migration:create:win --name=CustomMigration
 # undo most recent migration
 $ npm run migration:revert
 ```
+
 - Never edit existing migration, create a new one instead
-- On Windows, use the *:win variants because environment variable syntax differs (%VAR% - $VAR).
+- On Windows, use the \*:win variants because environment variable syntax differs (%VAR% - $VAR).
 
 ## Migration (Production)
+
 For running a newly migration in production using .env.production, just run this command
+
 ```bash
 $ npm run migration:run:production
 ```
 
 ## Migration (Staging)
+
 For running a newly migration in staging using .env.staging, just run this command
+
 ```bash
 $ npm run migration:run:staging
 ```
 
 ## Migration (Using compiled js)
+
 If you want to run migration using compiled javascript files on dist folder, you can use this command
+
 ```bash
 $ npm run build
 
-# For production, will use .env.production 
+# For production, will use .env.production
 $ NODE_ENV=production npm run migration:run:js
 
 # For staging, will use .env.staging

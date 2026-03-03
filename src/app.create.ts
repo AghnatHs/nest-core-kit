@@ -1,8 +1,8 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Express } from 'express';
 import { Logger } from 'nestjs-pino';
-import { AllExceptionsFilter } from './core/http/filters/http-exception.filter';
-import { SuccessResponseInterceptor } from './core/http/interceptors/success-response.interceptor';
+import { AllExceptionsFilter } from './infrastructure/core/http/filters/http-exception.filter';
+import { SuccessResponseInterceptor } from './infrastructure/core/http/interceptors/success-response.interceptor';
 
 /**
  * Configures the NestJS application with global settings and middleware.
