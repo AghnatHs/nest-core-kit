@@ -32,14 +32,31 @@ Use at your own discretion.
 
 ## How I structure the project
 
-I use a DDD + VSA-inspired structure, but not strictly follow DDD principles. The goal is to pragmatically separate concerns and keep the codebase easy to maintain and understand.
+Inspired by DDD and Vertical Slice architecture for the project structure
 
 - Domain → Domain models + domain services
 - Features (UseCases) → API layer (Controllers) + application services (UseCases) + DTOs + validators
-- Infrastructure → ORM (TypeORM) + Express (NestJS) + Logger (Pino) + ExceptionFilter + Interceptor
-- Libs → reusable by Domain or Features (pure, no framework dependencies)
-- Migrations → depend on Infrastructure (ORM)
+- Infrastructure → Anything related to infra (ORM, Logger, ExceptionFilter, Interceptor, Mail things, etc)
+- Libs → reusable utils can be used by Domain or Features (no frameworks dependencies)
+- Migrations → TypeORM migration 
 - Types → mostly for extending Express.Request and Express.Response, but can be used for other shared types
+
+<p align="center">
+  <img src=".github/docs/vsa.png" width="600" />
+</p>
+
+- Each feature have its own implementation (but not strictly "free form"); When there is a common logic between features, Refactor it into the domain entity or domain services.
+- Refactor repeated logic into a rich Domain
+- Refactor repeated domain-agnostic code into services, repositories
+- Integration test the Use Cases
+- Unit test the domain
+
+from https://www.jimmybogard.com/vertical-slice-architecture/: </br>
+"If your team does understand refactoring, and can recognize when to push complex logic into the domain, into what DDD services should have been, and is familiar other Fowler/Kerievsky refactoring techniques, you'll find this style of architecture able to scale far past the traditional layered/concentric architectures."
+
+other references: </br>
+- https://www.milanjovanovic.tech/blog/vertical-slice-architecture-where-does-the-shared-logic-live
+- https://verticalslicearchitecture.com/learn/cookbook/history.html
 
 ## Project setup
 
