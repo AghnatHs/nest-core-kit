@@ -4,13 +4,26 @@ import * as fs from 'fs';
 import { lastValueFrom, of, throwError } from 'rxjs';
 import { FileRollbackInterceptor } from './file-rollback.interceptor';
 
+jest.mock('fs', () => ({
+  existsSync: jest.fn(),
+  unlinkSync: jest.fn(),
+}));
+
 describe('FileRollbackInterceptor', () => {
   let interceptor: FileRollbackInterceptor;
   let context: ExecutionContext;
   let callHandler: CallHandler;
+  let existsSyncMock: jest.MockedFunction<typeof fs.existsSync>;
+  let unlinkSyncMock: jest.MockedFunction<typeof fs.unlinkSync>;
 
   beforeEach(() => {
     jest.restoreAllMocks();
+    jest.clearAllMocks();
+
+    existsSyncMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
+    unlinkSyncMock = fs.unlinkSync as jest.MockedFunction<typeof fs.unlinkSync>;
+    existsSyncMock.mockReset();
+    unlinkSyncMock.mockReset();
 
     interceptor = new FileRollbackInterceptor();
     const logger = (
@@ -27,7 +40,7 @@ describe('FileRollbackInterceptor', () => {
 
     context = {
       switchToHttp: () => ({
-        getRequest: () => ({}) as Request,
+        getRequest: () => ({}) as unknown as Request,
       }),
     } as ExecutionContext;
 
@@ -37,17 +50,14 @@ describe('FileRollbackInterceptor', () => {
   });
 
   it('must pass through successful response without deleting files', async () => {
-    const existsSpy = jest.spyOn(fs, 'existsSync');
-    const unlinkSpy = jest.spyOn(fs, 'unlinkSync');
-
     (callHandler.handle as jest.Mock).mockReturnValue(of('ok'));
 
     await expect(
       lastValueFrom(interceptor.intercept(context, callHandler)),
     ).resolves.toBe('ok');
 
-    expect(existsSpy).not.toHaveBeenCalled();
-    expect(unlinkSpy).not.toHaveBeenCalled();
+    expect(existsSyncMock).not.toHaveBeenCalled();
+    expect(unlinkSyncMock).not.toHaveBeenCalled();
   });
 
   it('must rollback single uploaded file and rethrow error', async () => {
@@ -59,12 +69,12 @@ describe('FileRollbackInterceptor', () => {
         getRequest: () =>
           ({
             file: { path: filePath },
-          }) as Request,
+          }) as unknown as Request,
       }),
     } as ExecutionContext;
 
-    const existsSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    const unlinkSpy = jest.spyOn(fs, 'unlinkSync').mockImplementation();
+    existsSyncMock.mockReturnValue(true);
+    unlinkSyncMock.mockImplementation();
     const logger = (
       interceptor as unknown as {
         logger: { warn: jest.Mock };
@@ -80,8 +90,8 @@ describe('FileRollbackInterceptor', () => {
     expect(logger.warn).toHaveBeenCalledWith(
       'Error detected during request processing. Rolling back 1 uploaded files.',
     );
-    expect(existsSpy).toHaveBeenCalledWith(filePath);
-    expect(unlinkSpy).toHaveBeenCalledWith(filePath);
+    expect(existsSyncMock).toHaveBeenCalledWith(filePath);
+    expect(unlinkSyncMock).toHaveBeenCalledWith(filePath);
   });
 
   it('must rollback files from request.files array', async () => {
@@ -94,12 +104,12 @@ describe('FileRollbackInterceptor', () => {
         getRequest: () =>
           ({
             files: [{ path: fileA }, { path: fileB }],
-          }) as Request,
+          }) as unknown as Request,
       }),
     } as ExecutionContext;
 
-    const existsSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    const unlinkSpy = jest.spyOn(fs, 'unlinkSync').mockImplementation();
+    existsSyncMock.mockReturnValue(true);
+    unlinkSyncMock.mockImplementation();
 
     (callHandler.handle as jest.Mock).mockReturnValue(throwError(() => error));
 
@@ -107,10 +117,10 @@ describe('FileRollbackInterceptor', () => {
       lastValueFrom(interceptor.intercept(context, callHandler)),
     ).rejects.toBe(error);
 
-    expect(existsSpy).toHaveBeenNthCalledWith(1, fileA);
-    expect(existsSpy).toHaveBeenNthCalledWith(2, fileB);
-    expect(unlinkSpy).toHaveBeenNthCalledWith(1, fileA);
-    expect(unlinkSpy).toHaveBeenNthCalledWith(2, fileB);
+    expect(existsSyncMock).toHaveBeenNthCalledWith(1, fileA);
+    expect(existsSyncMock).toHaveBeenNthCalledWith(2, fileB);
+    expect(unlinkSyncMock).toHaveBeenNthCalledWith(1, fileA);
+    expect(unlinkSyncMock).toHaveBeenNthCalledWith(2, fileB);
   });
 
   it('must rollback files from request.files object map', async () => {
@@ -130,8 +140,8 @@ describe('FileRollbackInterceptor', () => {
       }),
     } as ExecutionContext;
 
-    const existsSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    const unlinkSpy = jest.spyOn(fs, 'unlinkSync').mockImplementation();
+    existsSyncMock.mockReturnValue(true);
+    unlinkSyncMock.mockImplementation();
 
     (callHandler.handle as jest.Mock).mockReturnValue(throwError(() => error));
 
@@ -139,10 +149,10 @@ describe('FileRollbackInterceptor', () => {
       lastValueFrom(interceptor.intercept(context, callHandler)),
     ).rejects.toBe(error);
 
-    expect(existsSpy).toHaveBeenNthCalledWith(1, imagePath);
-    expect(existsSpy).toHaveBeenNthCalledWith(2, docPath);
-    expect(unlinkSpy).toHaveBeenNthCalledWith(1, imagePath);
-    expect(unlinkSpy).toHaveBeenNthCalledWith(2, docPath);
+    expect(existsSyncMock).toHaveBeenNthCalledWith(1, imagePath);
+    expect(existsSyncMock).toHaveBeenNthCalledWith(2, docPath);
+    expect(unlinkSyncMock).toHaveBeenNthCalledWith(1, imagePath);
+    expect(unlinkSyncMock).toHaveBeenNthCalledWith(2, docPath);
   });
 
   it('must log delete failure and continue rethrowing original error', async () => {
@@ -154,12 +164,12 @@ describe('FileRollbackInterceptor', () => {
         getRequest: () =>
           ({
             file: { path: filePath },
-          }) as Request,
+          }) as unknown as Request,
       }),
     } as ExecutionContext;
 
-    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    jest.spyOn(fs, 'unlinkSync').mockImplementation(() => {
+    existsSyncMock.mockReturnValue(true);
+    unlinkSyncMock.mockImplementation(() => {
       throw new Error('permission denied');
     });
     const errorSpy = jest

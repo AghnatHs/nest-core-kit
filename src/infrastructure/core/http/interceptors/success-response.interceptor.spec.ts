@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 import { of } from 'rxjs';
-import { DataResponse, MessageResponse } from '../http-response';
+import { DataResponse, HTTPResponse, MessageResponse } from '../http-response';
 import { SuccessResponseInterceptor } from './success-response.interceptor';
 
 describe('SuccessResponseInterceptor', () => {
@@ -52,9 +52,11 @@ describe('SuccessResponseInterceptor', () => {
 
     interceptor
       .intercept(context, callHandler)
-      .subscribe((result: DataResponse<Record<string, unknown>>) => {
+      .subscribe((result: HTTPResponse) => {
         expect(result).toBe(data);
-        expect(result.data).toEqual({ foo: 'bar' });
+        expect((result as DataResponse<Record<string, unknown>>).data).toEqual({
+          foo: 'bar',
+        });
         expect(result.message).toBe('Data fetched successfully');
         done();
       });
