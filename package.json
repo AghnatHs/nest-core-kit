@@ -44,7 +44,7 @@
     "cross-env": "^10.1.0",
     "joi": "^18.1.2",
     "mysql2": "^3.22.2",
-    "nestjs-paginate": "^12.11.0",
+    "nestjs-paginate": "^13.1.0",
     "nestjs-pino": "^4.6.1",
     "pino": "^10.3.1",
     "pino-pretty": "^13.1.3",
