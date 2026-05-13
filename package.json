@@ -42,7 +42,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "cross-env": "^10.1.0",
-    "joi": "^18.1.2",
+    "joi": "^18.2.1",
     "mysql2": "^3.22.3",
     "nestjs-paginate": "^13.2.0",
     "nestjs-pino": "^4.6.1",
@@ -51,7 +51,7 @@
     "pino-roll": "^4.0.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "typeorm": "^0.3.28",
+    "typeorm": "^0.3.29",
     "typeorm-cursor-pagination": "^0.10.1"
   },
   "devDependencies": {
