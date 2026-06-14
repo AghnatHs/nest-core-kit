@@ -21,7 +21,7 @@ function createAdminConnectionOptions(): DataSourceOptions {
     port: parseInt(process.env.DB_PORT ?? '3306', 10),
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
-  } as DataSourceOptions;
+  };
 }
 
 /**
