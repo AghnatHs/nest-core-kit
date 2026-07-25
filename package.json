@@ -43,7 +43,7 @@
     "class-validator": "^0.15.1",
     "cross-env": "^10.1.0",
     "joi": "^18.2.3",
-    "mysql2": "^3.23.0",
+    "mysql2": "^3.23.1",
     "nestjs-paginate": "^15.0.1",
     "nestjs-pino": "^4.6.1",
     "pino": "^10.3.1",
