@@ -27,7 +27,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true,
-    "ignoreDeprecations": "6.0"
+    "esModuleInterop": true
   }
 }
