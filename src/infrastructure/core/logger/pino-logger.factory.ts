@@ -1,4 +1,5 @@
 import { ConfigService } from '@nestjs/config';
+import * as fs from 'fs';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Params } from 'nestjs-pino';
 import * as path from 'path';
@@ -12,6 +13,7 @@ export function createPinoLoggerOptions(config: ConfigService): Params {
   const appName = config.get<string>('app.name');
 
   const logsDir = path.join(process.cwd(), 'logs');
+  fs.mkdirSync(logsDir, { recursive: true });
 
   return {
     pinoHttp: {
