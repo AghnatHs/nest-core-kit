@@ -6,7 +6,7 @@ import * as Joi from 'joi';
  */
 export default Joi.object({
   NODE_ENV: Joi.string()
-    .valid('development', 'production', 'test', 'staging')
+    .valid('development', 'production', 'test')
     .default('development'),
 
   APP_NAME: Joi.string().required(),

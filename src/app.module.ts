@@ -7,13 +7,11 @@ import { dataSourceOptions } from './infrastructure/config/database/typeorm.conf
 import environmentValidation from './infrastructure/config/environment.validation';
 import { createPinoLoggerOptions } from './infrastructure/core/logger/pino-logger.factory';
 
-const env: string = process.env.NODE_ENV || 'development';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${env}`,
+      ignoreEnvFile: true,
       load: [app],
       validationSchema: environmentValidation,
     }),

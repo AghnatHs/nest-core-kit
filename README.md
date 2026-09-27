@@ -28,7 +28,7 @@ Use at your own discretion.
 - Interceptor (when response is success)
 
 - Centralized response using HTTPResponse class for consistency
-- .env.\* (per development)
+- A single `.env` file (see below)
 
 ## How I structure the project
 
@@ -38,7 +38,7 @@ Inspired by DDD and Vertical Slice architecture for the project structure
 - Features (UseCases) → API layer (Controllers) + application services (UseCases) + DTOs + validators
 - Infrastructure → Anything related to infra (ORM, Logger, ExceptionFilter, Interceptor, Mail things, etc)
 - Libs → reusable utils can be used by Domain or Features (no frameworks dependencies)
-- Migrations → TypeORM migration 
+- Migrations → TypeORM migration
 - Types → mostly for extending Express.Request and Express.Response, but can be used for other shared types
 
 <p align="center">
@@ -55,6 +55,7 @@ from https://www.jimmybogard.com/vertical-slice-architecture/: </br>
 "If your team does understand refactoring, and can recognize when to push complex logic into the domain, into what DDD services should have been, and is familiar other Fowler/Kerievsky refactoring techniques, you'll find this style of architecture able to scale far past the traditional layered/concentric architectures."
 
 other references: </br>
+
 - https://www.milanjovanovic.tech/blog/vertical-slice-architecture-where-does-the-shared-logic-live
 - https://verticalslicearchitecture.com/learn/cookbook/history.html
 
@@ -69,22 +70,27 @@ $ cd your-repository
 
 $ npm install
 
-# setup .env.production, .env.development, and .env.test from .env.example
-$ cp .env.example .env.production
-$ cp .env.example .env.staging # optional in production environment
-$ cp .env.example .env.development # optional in production environment
-$ cp .env.example .env.test # optional in production environment
+# create your single local env file
+$ cp .env.example .env
 
 $ mkdir logs
 
 $ npm run start:dev
 ```
 
+## Environment variables
+
+There is one env file: `.env` and `.env.example`.
+
+- Every `NODE_ENV` (`development`, `test`, `production`) reads the same `.env`.
+- CI and containers inject variables directly. There, `loadEnv()` is a no-op and the injected
+  values always win over anything in `.env`.
+
 ## Migration
 
 ## Migration (Development)
 
-Migration in development will use .env.development
+Migrations read your local `.env` file.
 
 ```bash
 # Apply all migration to database
@@ -109,18 +115,11 @@ $ npm run migration:revert
 
 ## Migration (Production)
 
-For running a newly migration in production using .env.production, just run this command
+In production the environment variables are injected, not read from a file. With those variables
+set in the environment, run:
 
 ```bash
 $ npm run migration:run:production
-```
-
-## Migration (Staging)
-
-For running a newly migration in staging using .env.staging, just run this command
-
-```bash
-$ npm run migration:run:staging
 ```
 
 ## Migration (Using compiled js)
@@ -129,24 +128,18 @@ If you want to run migration using compiled javascript files on dist folder, you
 
 ```bash
 $ npm run build
-
-# For production, will use .env.production
 $ NODE_ENV=production npm run migration:run:js
-
-# For staging, will use .env.staging
-$ NODE_ENV=staging npm run migration:run:js
 ```
 
 ## Compile and run the project
 
 ```bash
-# development mode, will use .env.development
-$ cp .env.example .env.development
+# development mode
+$ cp .env.example .env
 $ npm run migration:run
 $ npm run start:dev
 
-# production mode, will use .env.production
-$ cp .env.example .env.production
+# production mode
 $ npm run build
 $ npm run migration:run:production
 $ npm run start:prod
@@ -155,11 +148,6 @@ $ npm run start:prod
 $ cp .env.example .env
 $ docker build --build-arg NODE_ENV=production -t nest-core-kit .
 $ docker run -d -p 3000:3000 --env-file .env --name nest-core-kit-container nest-core-kit
-
-# using docker (staging)
-$ cp .env.example .env.staging
-$ docker build --build-arg NODE_ENV=staging -t nest-core-kit:staging .
-$ docker run -d -p 3000:3000 --env-file .env.staging --name nest-core-kit-staging nest-core-kit:staging
 ```
 
 ## Run tests
