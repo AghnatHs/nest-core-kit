@@ -1,3 +1,4 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { loadEnv } from '../env';
 
@@ -19,3 +20,24 @@ export const dataSourceOptions: DataSourceOptions = {
 };
 
 export const connectionSource = new DataSource(dataSourceOptions);
+
+/**
+ * Builds the options used by AppModule. In the test environment it swaps the
+ * Postgres connection for an in-process PGlite database
+ */
+export async function createDataSourceOptions(): Promise<TypeOrmModuleOptions> {
+  if (!isTestEnvironment) {
+    return {
+      ...dataSourceOptions,
+      autoLoadEntities: true,
+    };
+  }
+
+  const { PGliteDriver } = await import('typeorm-pglite');
+
+  return {
+    ...dataSourceOptions,
+    autoLoadEntities: true,
+    driver: new PGliteDriver({}).driver,
+  };
+}

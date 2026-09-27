@@ -30,6 +30,7 @@ Use at your own discretion.
 
 - Centralized response using HTTPResponse class for consistency
 - A single `.env` file (see below)
+- An example vertical slice (`audit-logs`) with entity, service, controller, DTOs, migration, and e2e tests
 
 ## How I structure the project
 
