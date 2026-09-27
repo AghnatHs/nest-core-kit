@@ -21,8 +21,8 @@ export const dataSourceOptions: DataSourceOptions = {
   database: process.env.DB_DATABASE,
   synchronize: isTestEnvironment ? true : false,
   logging: process.env.TYPEORM_LOGGING === 'true',
-  entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/../../migrations/*{.ts,.js}'],
+  entities: [__dirname + '/../../../**/*.entity{.ts,.js}'],
+  migrations: [__dirname + '/../../../migrations/*{.ts,.js}'],
 };
 
 export const connectionSource = new DataSource(dataSourceOptions);
