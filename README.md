@@ -22,7 +22,8 @@ Use at your own discretion.
 
 ## What already configured
 
-- TypeORM (migrations included by command "npm run migration:\*")
+- TypeORM (migrations included by command "npm run migration:\*") on PostgreSQL
+- e2e tests run on in-process PGlite, so no database server is needed for tests
 - Logger (Pino) (log to console and files (daily rotation))
 - ExceptionFilter (when response is error or HTTPException)
 - Interceptor (when response is success)
@@ -75,13 +76,18 @@ $ cp .env.example .env
 
 $ mkdir logs
 
+# start a local PostgreSQL (Docker)
+$ npm run db:up
+
 $ npm run start:dev
 ```
 
 ## Environment variables
 
-There is one env file: `.env` and `.env.example`.
+There is one env file: `.env`, with `.env.example` as the tracked template.
 
+- The database is PostgreSQL. `docker-compose.yml` starts a matching local instance
+  (`npm run db:up` / `npm run db:down`).
 - Every `NODE_ENV` (`development`, `test`, `production`) reads the same `.env`.
 - CI and containers inject variables directly. There, `loadEnv()` is a no-op and the injected
   values always win over anything in `.env`.
@@ -159,7 +165,7 @@ $ npm run test
 # unit tests (verbose)
 $ npm run test:verbose
 
-# e2e tests
+# e2e tests using in-process PGlite
 $ npm run test:e2e
 
 # test coverage

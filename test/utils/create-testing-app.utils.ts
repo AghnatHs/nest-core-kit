@@ -9,22 +9,23 @@ import { dataSourceOptions } from 'src/infrastructure/config/database/typeorm.co
 import environmentValidation from 'src/infrastructure/config/environment.validation';
 import { createPinoLoggerOptions } from 'src/infrastructure/core/logger/pino-logger.factory';
 import { App } from 'supertest/types';
+import { PGliteDriver } from 'typeorm-pglite';
 
 /**
  * Creates and initializes a Nest application for testing purposes.
- * Uses a unique database per test file for isolation.
+ * Uses an in-process PGlite database, so no database server is required.
+ * Closing the app closes the PGlite instance, giving each test file a fresh database.
  *
- * @async
- * @param databaseName - The name of the test database to use
  * @returns {Promise<INestApplication<App>>} A Promise that resolves to the initialized Nest application.
  */
-export default async function createTestingApp(
-  databaseName: string,
-): Promise<INestApplication<App>> {
+export default async function createTestingApp(): Promise<
+  INestApplication<App>
+> {
   const testDataSourceOptions = {
     ...dataSourceOptions,
-    database: databaseName,
+    driver: new PGliteDriver({}).driver,
     autoLoadEntities: true,
+    synchronize: true,
     logging: false,
   } as TypeOrmModuleOptions;
 
