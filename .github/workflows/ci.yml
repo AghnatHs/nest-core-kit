@@ -188,7 +188,7 @@ jobs:
           path: dist
 
       - name: Run database migrations
-        run: node ./node_modules/typeorm/cli.js migration:run -d dist/config/database/typeorm.config.js
+        run: npm run migration:run:js
 
       - name: Start app and assert it serves requests
         run: |
