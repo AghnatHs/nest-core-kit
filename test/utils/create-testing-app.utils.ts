@@ -10,8 +10,6 @@ import environmentValidation from 'src/infrastructure/config/environment.validat
 import { createPinoLoggerOptions } from 'src/infrastructure/core/logger/pino-logger.factory';
 import { App } from 'supertest/types';
 
-const env: string = process.env.NODE_ENV || 'test';
-
 /**
  * Creates and initializes a Nest application for testing purposes.
  * Uses a unique database per test file for isolation.
@@ -34,7 +32,7 @@ export default async function createTestingApp(
     imports: [
       ConfigModule.forRoot({
         isGlobal: true,
-        envFilePath: `.env.${env}`,
+        ignoreEnvFile: true,
         load: [app],
         validationSchema: environmentValidation,
       }),

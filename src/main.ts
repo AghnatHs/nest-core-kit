@@ -4,6 +4,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger } from 'nestjs-pino';
 import { initializeApp } from './app.create';
 import { AppModule } from './app.module';
+import { loadEnv } from './infrastructure/config/env';
+
+loadEnv();
 
 let logger: Logger;
 
