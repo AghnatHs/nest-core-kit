@@ -38,6 +38,8 @@ export async function createDataSourceOptions(): Promise<TypeOrmModuleOptions> {
   return {
     ...dataSourceOptions,
     autoLoadEntities: true,
+    entities: [],
+    migrations: [],
     driver: new PGliteDriver({}).driver,
   };
 }
