@@ -7,26 +7,27 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { Logger } from 'nestjs-pino';
+import { type Mocked, vi } from 'vitest';
 import { AllExceptionsFilter } from './http-exception.filter';
 
 describe('AllExceptionsFilter', () => {
   let filter: AllExceptionsFilter;
   let mockResponse: Partial<Response>;
   let mockHost: ArgumentsHost;
-  let mockLogger: jest.Mocked<Logger>;
+  let mockLogger: Mocked<Logger>;
 
   beforeEach(() => {
     mockLogger = {
-      error: jest.fn(),
-      log: jest.fn(),
-      warn: jest.fn(),
-      debug: jest.fn(),
-      verbose: jest.fn(),
-    } as unknown as jest.Mocked<Logger>;
+      error: vi.fn(),
+      log: vi.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+      verbose: vi.fn(),
+    } as unknown as Mocked<Logger>;
 
     mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
+      status: vi.fn().mockReturnThis(),
+      json: vi.fn(),
     };
 
     mockHost = {

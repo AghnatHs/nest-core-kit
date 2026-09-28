@@ -2,26 +2,28 @@ import { CallHandler, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import * as fs from 'fs';
 import { lastValueFrom, of, throwError } from 'rxjs';
+import { vi, type Mock, type MockedFunction } from 'vitest';
 import { FileRollbackInterceptor } from './file-rollback.interceptor';
 
-jest.mock('fs', () => ({
-  existsSync: jest.fn(),
-  unlinkSync: jest.fn(),
+vi.mock('fs', () => ({
+  existsSync: vi.fn(),
+  unlinkSync: vi.fn(),
 }));
 
 describe('FileRollbackInterceptor', () => {
   let interceptor: FileRollbackInterceptor;
   let context: ExecutionContext;
   let callHandler: CallHandler;
-  let existsSyncMock: jest.MockedFunction<typeof fs.existsSync>;
-  let unlinkSyncMock: jest.MockedFunction<typeof fs.unlinkSync>;
+  let handleMock: Mock;
+  let existsSyncMock: MockedFunction<typeof fs.existsSync>;
+  let unlinkSyncMock: MockedFunction<typeof fs.unlinkSync>;
 
   beforeEach(() => {
-    jest.restoreAllMocks();
-    jest.clearAllMocks();
+    vi.restoreAllMocks();
+    vi.clearAllMocks();
 
-    existsSyncMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
-    unlinkSyncMock = fs.unlinkSync as jest.MockedFunction<typeof fs.unlinkSync>;
+    existsSyncMock = fs.existsSync as MockedFunction<typeof fs.existsSync>;
+    unlinkSyncMock = fs.unlinkSync as MockedFunction<typeof fs.unlinkSync>;
     existsSyncMock.mockReset();
     unlinkSyncMock.mockReset();
 
@@ -35,8 +37,8 @@ describe('FileRollbackInterceptor', () => {
       }
     ).logger;
 
-    jest.spyOn(logger, 'warn').mockImplementation();
-    jest.spyOn(logger, 'error').mockImplementation();
+    vi.spyOn(logger, 'warn').mockImplementation(() => undefined);
+    vi.spyOn(logger, 'error').mockImplementation(() => undefined);
 
     context = {
       switchToHttp: () => ({
@@ -44,13 +46,14 @@ describe('FileRollbackInterceptor', () => {
       }),
     } as ExecutionContext;
 
+    handleMock = vi.fn();
     callHandler = {
-      handle: jest.fn(),
+      handle: handleMock,
     };
   });
 
   it('must pass through successful response without deleting files', async () => {
-    (callHandler.handle as jest.Mock).mockReturnValue(of('ok'));
+    handleMock.mockReturnValue(of('ok'));
 
     await expect(
       lastValueFrom(interceptor.intercept(context, callHandler)),
@@ -74,14 +77,14 @@ describe('FileRollbackInterceptor', () => {
     } as ExecutionContext;
 
     existsSyncMock.mockReturnValue(true);
-    unlinkSyncMock.mockImplementation();
+    unlinkSyncMock.mockImplementation(() => undefined);
     const logger = (
       interceptor as unknown as {
-        logger: { warn: jest.Mock };
+        logger: { warn: Mock };
       }
     ).logger;
 
-    (callHandler.handle as jest.Mock).mockReturnValue(throwError(() => error));
+    handleMock.mockReturnValue(throwError(() => error));
 
     await expect(
       lastValueFrom(interceptor.intercept(context, callHandler)),
@@ -109,9 +112,9 @@ describe('FileRollbackInterceptor', () => {
     } as ExecutionContext;
 
     existsSyncMock.mockReturnValue(true);
-    unlinkSyncMock.mockImplementation();
+    unlinkSyncMock.mockImplementation(() => undefined);
 
-    (callHandler.handle as jest.Mock).mockReturnValue(throwError(() => error));
+    handleMock.mockReturnValue(throwError(() => error));
 
     await expect(
       lastValueFrom(interceptor.intercept(context, callHandler)),
@@ -141,9 +144,9 @@ describe('FileRollbackInterceptor', () => {
     } as ExecutionContext;
 
     existsSyncMock.mockReturnValue(true);
-    unlinkSyncMock.mockImplementation();
+    unlinkSyncMock.mockImplementation(() => undefined);
 
-    (callHandler.handle as jest.Mock).mockReturnValue(throwError(() => error));
+    handleMock.mockReturnValue(throwError(() => error));
 
     await expect(
       lastValueFrom(interceptor.intercept(context, callHandler)),
@@ -172,7 +175,7 @@ describe('FileRollbackInterceptor', () => {
     unlinkSyncMock.mockImplementation(() => {
       throw new Error('permission denied');
     });
-    const errorSpy = jest
+    const errorSpy = vi
       .spyOn(
         (
           interceptor as unknown as {
@@ -181,11 +184,9 @@ describe('FileRollbackInterceptor', () => {
         ).logger,
         'error',
       )
-      .mockImplementation();
+      .mockImplementation(() => undefined);
 
-    (callHandler.handle as jest.Mock).mockReturnValue(
-      throwError(() => originalError),
-    );
+    handleMock.mockReturnValue(throwError(() => originalError));
 
     await expect(
       lastValueFrom(interceptor.intercept(context, callHandler)),
