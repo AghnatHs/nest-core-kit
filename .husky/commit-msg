@@ -1,7 +1,7 @@
 message="$(cat "$1")"
 
 # Allowed commit types
-types="feat|fix|hotfix|docs|style|refactor|test|chore|perf|revert"
+types="feat|fix|hotfix|docs|style|refactor|test|chore|perf|revert|security|ci|cd|build"
 
 # Required pattern: type(module): description
 requiredPattern="^($types)\([a-zA-Z0-9_-]+\): .+"
@@ -24,6 +24,10 @@ if ! echo "$message" | grep -Eq "$requiredPattern"; then
   echo "  chore     Maintenance tasks"
   echo "  perf      Performance optimization, algorithm optimization"
   echo "  revert    Revert PR, revert commit"
+  echo "  security  Security improvements"
+  echo "  ci        Continuous Integration changes"
+  echo "  cd        Continuous Deployment changes"
+  echo "  build     Build system changes"
   echo
   echo "Examples:"
   echo "  feat(User): add authentication mechanism"
