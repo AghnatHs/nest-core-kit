@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext } from '@nestjs/common';
-import { HttpArgumentsHost } from '@nestjs/common/interfaces';
+import { HttpArgumentsHost } from '@nestjs/common/interfaces/features/arguments-host.interface';
 import { of } from 'rxjs';
 import { DataResponse, HTTPResponse, MessageResponse } from '../http-response';
 import { SuccessResponseInterceptor } from './success-response.interceptor';

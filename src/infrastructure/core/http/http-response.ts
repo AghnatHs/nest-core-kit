@@ -7,8 +7,8 @@
  */
 export abstract class HTTPResponse {
   success: boolean = true;
-  statusCode: number;
-  message: string;
+  statusCode!: number;
+  message!: string;
 }
 
 /**
