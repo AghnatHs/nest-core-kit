@@ -8,9 +8,9 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { AuditLog } from '../../domain/entity/audit-log.entity';
 import { DataResponse } from '../../infrastructure/core/http/http-response';
 import { AuditLogsService } from './audit-logs.service';
+import { AuditLog } from './domain/entity/audit-log.entity';
 import { CreateAuditLogDto } from './dto/create-audit-log.dto';
 import { QueryAuditLogDto } from './dto/query-audit-log.dto';
 

@@ -36,10 +36,9 @@ Use at your own discretion.
 
 Inspired by DDD and Vertical Slice architecture for the project structure
 
-- Domain → Domain models + domain services
-- Features (UseCases) → API layer (Controllers) + application services (UseCases) + DTOs + validators
+- Modules (UseCases) → API layer (Controllers) + application services (UseCases) + DTOs + validators, each with its own `domain` folder (domain models + domain services)
 - Infrastructure → Anything related to infra (ORM, Logger, ExceptionFilter, Interceptor, Mail things, etc)
-- Libs → reusable utils can be used by Domain or Features (no frameworks dependencies)
+- Libs → reusable utils can be used by Modules (no frameworks dependencies)
 - Migrations → TypeORM migration
 - Types → mostly for extending Express.Request and Express.Response, but can be used for other shared types
 
