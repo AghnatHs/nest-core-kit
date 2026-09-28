@@ -5,7 +5,9 @@
   },
   "typeRoots": ["./src/types", "./node_modules/@types"],
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
